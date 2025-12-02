@@ -16,8 +16,8 @@ jobs:
       - name: Exec Git diff
         run: |
           IDS=$(git diff HEAD~ --name-only \
-            | grep -E '^test/[^/]+/' \
-            | sed -E 's|^test/([^/]+)/.*|\1|' \
+            | grep -E '^devices/[0-9]+/' \
+            | sed -E 's|^devices/([0-9]+)/.*|\1|' \
             | sort -u)
           echo "Unique IDs:"
           echo "$IDS"
