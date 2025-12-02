@@ -8,20 +8,14 @@ jobs:
   call-get-a-commit-api:
     runs-on: ubuntu-latest
     steps:
-      - name: Call Github API
-        run: |
-          RESPONSE=$(curl --request GET \
-            --url https://api.github.com/repos/${{ github.repository }}/commits/${{ github.sha }} \
-            --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-            --header 'content-type: application/json')
-          echo "$RESPONSE" > commit.json
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Extract RESPONSE
+      - name: Exec Git diff
         run: |
-          FILES=$(jq -r '.files[].filename' commit.json)
-          echo "$FILES"
-          echo "Parent directories:"
-          for FILE in $FILES; do
-            PARENT_DIR=$(dirname "$FILE")
-            echo "$PARENT_DIR"
-          done
+          IDS=$(git diff HEAD~ --name-only \
+            | grep -E '^test/[^/]+/' \
+            | sed -E 's|^test/([^/]+)/.*|\1|' \
+            | sort -u)
+          echo "Unique IDs:"
+          echo "$IDS"
