@@ -8,8 +8,20 @@ jobs:
   call-get-a-commit-api:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          curl --request GET \
+      - name: Call Github API
+        run: |
+          RESPONSE=$(curl --request GET \
             --url https://api.github.com/repos/${{ github.repository }}/commits/${{ github.sha }} \
             --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-            --header 'content-type: application/json'
+            --header 'content-type: application/json')
+          echo "$RESPONSE" > commit.json
+
+      - name: Extract RESPONSE
+        run: |
+          FILES=$(jq -r '.files[].filename' commit.json)
+          echo "$FILES"
+          echo "Parent directories:"
+          for FILE in $FILES; do
+            PARENT_DIR=$(dirname "$FILE")
+            echo "$PARENT_DIR"
+          done
