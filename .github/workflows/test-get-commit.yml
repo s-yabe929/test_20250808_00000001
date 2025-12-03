@@ -24,7 +24,7 @@ jobs:
       - name: Set up diff command
         run: |
           if [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ]; then
-            echo "Initial push or force push detected. Showing full diff."
+            echo "Initial push detected. Showing full diff."
             echo "DIFF_COMMAND=git diff --stat" >> $GITHUB_ENV
           else
             echo "Diff from $BEFORE_SHA to $GITHUB_SHA:"
@@ -33,9 +33,14 @@ jobs:
 
       - name: Show diff
         run: |
-          IDS=$($DIFF_COMMAND --name-only \
+          echo "Running diff command: $DIFF_COMMAND"
+          DIFF_RESULT=$($DIFF_COMMAND --name-only)
+          echo "$DIFF_RESULT"
+
+          IDS=$(echo "$DIFF_RESULT" \
             | grep -E '^devices/[0-9]+/' \
             | sed -E 's|^devices/([0-9]+)/.*|\1|' \
             | sort -u)
+
           echo "Unique IDs:"
           echo "$IDS"
