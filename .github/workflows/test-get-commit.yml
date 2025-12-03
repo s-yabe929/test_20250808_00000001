@@ -22,4 +22,4 @@ jobs:
       - name: Show diff
         run: |
           echo "Diff from $PREV_COMMIT to HEAD:"
-          git diff $PREV_COMMIT HEA
+          git diff $PREV_COMMIT HEAD
