@@ -17,24 +17,30 @@ jobs:
       - name: Get previous commit from event payload
         run: |
           BEFORE_SHA=$(jq -r .before $GITHUB_EVENT_PATH)
+          FORCED=$(jq -r .forced $GITHUB_EVENT_PATH)
+
           echo "Previous commit: $BEFORE_SHA"
           echo "BEFORE_SHA=$BEFORE_SHA" >> $GITHUB_ENV
-
+          echo "Force push: $FORCED"
+          echo "FORCED=$FORCED" >> $GITHUB_ENV
 
       - name: Set up diff command
         run: |
-          if [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ]; then
+          if [ "$FORCED" = "true" ]; then
+            echo "Force push detected. Skipping diff."
+            echo "DIFF_COMMAND=skip" >> $GITHUB_ENV
+          elif [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ]; then
             echo "Initial push detected. Showing full diff."
-            echo "DIFF_COMMAND=git diff --stat" >> $GITHUB_ENV
+            echo "DIFF_COMMAND=git ls-files" >> $GITHUB_ENV
           else
             echo "Diff from $BEFORE_SHA to $GITHUB_SHA:"
-            echo "DIFF_COMMAND=git diff $BEFORE_SHA $GITHUB_SHA" >> $GITHUB_ENV
+            echo "DIFF_COMMAND=git diff $BEFORE_SHA $GITHUB_SHA --name-only" >> $GITHUB_ENV
           fi
 
       - name: Show diff
         run: |
           echo "Running diff command: $DIFF_COMMAND"
-          DIFF_RESULT=$($DIFF_COMMAND --name-only)
+          DIFF_RESULT=$($DIFF_COMMAND)
           echo "$DIFF_RESULT"
 
           IDS=$(echo "$DIFF_RESULT" \
