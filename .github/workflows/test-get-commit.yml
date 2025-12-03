@@ -13,13 +13,20 @@ jobs:
         with:
           fetch-depth: 0  # 履歴を全部取得（重要）
 
-      - name: Show commit info
+
+      - name: Get previous commit from event payload
         run: |
-          echo "Current commit: $GITHUB_SHA"
-          echo "Previous commit: $GITHUB_EVENT_BEFORE"
+          BEFORE_SHA=$(jq -r .before $GITHUB_EVENT_PATH)
+          echo "Previous commit: $BEFORE_SHA"
+          echo "BEFORE_SHA=$BEFORE_SHA" >> $GITHUB_ENV
 
 
-      - name: Show diff
+      - name: Show diff between pushes
         run: |
-          echo "Diff from $PREV_COMMIT to HEAD:"
-          git diff $GITHUB_EVENT_BEFORE $GITHUB_SHA
+          if [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ]; then
+            echo "Initial push or force push detected. Showing full diff."
+            git diff --stat
+          else
+            echo "Diff from $BEFORE_SHA to $GITHUB_SHA:"
+            git diff $BEFORE_SHA $GITHUB_SHA
+          fi
