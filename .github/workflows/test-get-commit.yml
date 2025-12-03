@@ -11,8 +11,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 履歴を全部取得（重要）
-
+          fetch-depth: 0  # Get all history
 
       - name: Get previous commit from event payload
         run: |
@@ -50,3 +49,11 @@ jobs:
 
           echo "Unique IDs:"
           echo "$IDS"
+
+      - name: Call Backend API
+        run: |
+          RESPONSE=$(curl --request PATCH \
+            --url http://localhost:8000/api/ci/v1/sumits/version/ \
+            --header 'authorization: Bearer ${{ secrets.AIRPLUG_CI_TOKEN }}' \
+            --header 'content-type: application/json')
+          echo "$RESPONSE"
