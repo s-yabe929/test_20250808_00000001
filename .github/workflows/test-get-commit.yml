@@ -5,19 +5,21 @@ on:
     branches: [ "main" ]
 
 jobs:
-  call-get-a-commit-api:
+  check-diff:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0  # 履歴を全部取得（重要）
 
-      - name: Exec Git diff
+      - name: Get previous commit
         run: |
-          IDS=$(git diff HEAD~ --name-only \
-            | grep -E '^devices/[0-9]+/' \
-            | sed -E 's|^devices/([0-9]+)/.*|\1|' \
-            | sort -u)
-          echo "Unique IDs:"
-          echo "$IDS"
+          PREV_COMMIT=$(git rev-parse origin/main)
+          echo "Previous commit: $PREV_COMMIT"
+          echo "PREV_COMMIT=$PREV_COMMIT" >> $GITHUB_ENV
+
+      - name: Show diff
+        run: |
+          echo "Diff from $PREV_COMMIT to HEAD:"
+          git diff $PREV_COMMIT HEA
