@@ -13,13 +13,13 @@ jobs:
         with:
           fetch-depth: 0  # 履歴を全部取得（重要）
 
-      - name: Get previous commit
+      - name: Show commit info
         run: |
-          PREV_COMMIT=$(git rev-parse origin/main)
-          echo "Previous commit: $PREV_COMMIT"
-          echo "PREV_COMMIT=$PREV_COMMIT" >> $GITHUB_ENV
+          echo "Current commit: $GITHUB_SHA"
+          echo "Previous commit: $GITHUB_EVENT_BEFORE"
+
 
       - name: Show diff
         run: |
           echo "Diff from $PREV_COMMIT to HEAD:"
-          git diff $PREV_COMMIT HEAD
+          git diff $GITHUB_EVENT_BEFORE $GITHUB_SHA
