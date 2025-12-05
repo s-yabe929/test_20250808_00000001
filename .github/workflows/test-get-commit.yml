@@ -49,7 +49,7 @@ jobs:
 
           echo "Unique IDs:"
           echo "$IDS"
-          if ${#IDS[@]} -eq 0 ]; then
+          if [[ ${#IDS[@]} -eq 0 ]]; then
             echo "No changes detected. Exiting."
             exit 1
           fi
