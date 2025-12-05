@@ -60,6 +60,8 @@ jobs:
       # sumit_config_testingではfeatureからfeatureブランチにマージした時に動作させて確認可能
       - name: Call Backend API
         run: |
+          echo "repository_name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
+
           if [ -z "$IDS" ]; then
             echo "No updates to process. Exiting."
             exit 0
@@ -75,7 +77,6 @@ jobs:
           PAYLOAD+="]"
           echo "Payload: $PAYLOAD"
 
-          echo "repository_name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
 
           TMP_BODY=$(mktemp)
           STATUS=$(curl -sS -X PATCH \
