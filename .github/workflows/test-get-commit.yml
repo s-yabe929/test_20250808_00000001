@@ -65,8 +65,11 @@ jobs:
           echo "Repository Name: $REPO_NAME"
           if [ "$REPO_NAME" = "sumit_config_testing" ]; then
             BASE_URL="https://cloud-dev.aeterlink.com/"
-          else
+          elif [ "$REPO_NAME" = "sumit_config" ]; then
             BASE_URL="https://cloud.aeterlink.dummy/"
+          else
+            echo "Unknown repository. Exiting."
+            exit 1
           fi
 
           if [ -z "$IDS" ]; then
@@ -84,7 +87,8 @@ jobs:
           PAYLOAD+="]"
           echo "Payload: $PAYLOAD"
 
-
+          TOKEN=${{ secrets.AIRPLUG_CI_TOKEN }}
+          echo "Token: $TOKEN"
           TMP_BODY=$(mktemp)
           STATUS=$(curl -sS -X PATCH \
             --url "$BASE_URL/api/ci/v1/sumits/version/" \
