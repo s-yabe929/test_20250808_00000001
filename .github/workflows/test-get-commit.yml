@@ -15,16 +15,15 @@ jobs:
 
       - name: Get previous commit from event payload
         run: |
-          BEFORE_SHA=$(jq -r .before $GITHUB_EVENT_PATH)
-          FORCED=$(jq -r .forced $GITHUB_EVENT_PATH)
 
-          echo "Previous commit: $BEFORE_SHA"
-          echo "BEFORE_SHA=$BEFORE_SHA" >> $GITHUB_ENV
-          echo "Force push: $FORCED"
-          echo "FORCED=$FORCED" >> $GITHUB_ENV
 
       - name: Show diff
         run: |
+          BEFORE_SHA=$(jq -r .before $GITHUB_EVENT_PATH)
+          FORCED=$(jq -r .forced $GITHUB_EVENT_PATH)
+          echo "Previous commit: $BEFORE_SHA"
+          echo "Force push: $FORCED"
+
           if [ "$FORCED" = "true" ]; then
             echo "Force push detected. Skipping diff."
             DIFF_COMMAND="echo -n"
