@@ -27,13 +27,13 @@ jobs:
         run: |
           if [ "$FORCED" = "true" ]; then
             echo "Force push detected. Skipping diff."
-            DIFF_COMMAND=echo -n
+            DIFF_COMMAND="echo -n"
           elif [ "$BEFORE_SHA" = "0000000000000000000000000000000000000000" ]; then
             echo "Initial push detected. Showing full diff."
-            DIFF_COMMAND=git diff HEAD~ --name-only
+            DIFF_COMMAND="git diff HEAD~ --name-only"
           else
             echo "Diff from $BEFORE_SHA to $GITHUB_SHA:"
-            DIFF_COMMAND=git diff $BEFORE_SHA $GITHUB_SHA --name-only
+            DIFF_COMMAND="git diff $BEFORE_SHA $GITHUB_SHA --name-only"
           fi
 
           echo "Running diff command: $DIFF_COMMAND"
