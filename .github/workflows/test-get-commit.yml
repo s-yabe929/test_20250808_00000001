@@ -23,7 +23,7 @@ jobs:
           echo "Force push: $FORCED"
           echo "FORCED=$FORCED" >> $GITHUB_ENV
 
-      - name: Set up diff command
+      - name: Show diff
         run: |
           if [ "$FORCED" = "true" ]; then
             echo "Force push detected. Skipping diff."
@@ -36,8 +36,6 @@ jobs:
             echo "DIFF_COMMAND=git diff $BEFORE_SHA $GITHUB_SHA --name-only" >> $GITHUB_ENV
           fi
 
-      - name: Show diff
-        run: |
           echo "Running diff command: $DIFF_COMMAND"
           DIFF_RESULT=$($DIFF_COMMAND)
           echo "$DIFF_RESULT"
@@ -49,24 +47,8 @@ jobs:
 
           echo "Unique IDs:"
           echo "$IDS"
-          if [ -z "$IDS" ]; then
-            echo "No changes detected. Exiting."
-            exit 1
-          fi
+          echo "IDS=$IDS" >> $GITHUB_ENV
 
-      - name: Generate Payload For API
-        run: |
-          PAYLOAD="["
-          for ID in $IDS; do
-            if [ "$PAYLOAD" != "[" ]; then
-              PAYLOAD+=","
-            fi
-            PAYLOAD+='{"id1": '"$ID"', "version": "'"$GITHUB_SHA"'"}'
-          done
-          PAYLOAD+="]"
-
-          echo "Generated Payload: $PAYLOAD"
-          echo "PAYLOAD=$PAYLOAD" >> $GITHUB_ENV
 
       # - name: Install curl
       #   run: |
@@ -83,6 +65,22 @@ jobs:
       # sumit_config_testingではfeatureからfeatureブランチにマージした時に動作させて確認可能
       - name: Call Backend API
         run: |
+          if [ -z "$IDS" ]; then
+            echo "No updates to process. Exiting."
+            exit 0
+          fi
+
+          PAYLOAD="["
+          for ID in $IDS; do
+            if [ "$PAYLOAD" != "[" ]; then
+              PAYLOAD+=","
+            fi
+            PAYLOAD+='{"id1": '"$ID"', "version": "'"$GITHUB_SHA"'"}'
+          done
+          PAYLOAD+="]"
+
+          echo "Generated Payload: $PAYLOAD"
+          echo "PAYLOAD=$PAYLOAD" >> $GITHUB_ENV
           TMP_BODY=$(mktemp)
           STATUS=$(curl -sS -X PATCH \
             --url http://localhost:8000/api/ci/v1/sumits/version/ \
