@@ -62,6 +62,7 @@ jobs:
         run: |
           # echo "repository_name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
           REPO_NAME=`basename ${{ github.repository }}`
+          echo "Repository Name: $REPO_NAME"
           if [ "$REPO_NAME" = "sumit_config_testing" ]; then
             BASE_URL="https://cloud-dev.aeterlink.com/"
           else
