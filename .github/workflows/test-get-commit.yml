@@ -50,10 +50,51 @@ jobs:
           echo "Unique IDs:"
           echo "$IDS"
 
+      - name: Generate Payload For API
+        run: |
+          PAYLOAD="["
+          for ID in $IDS; do
+            if [ "$PAYLOAD" != "[" ]; then
+              PAYLOAD+=","
+            fi
+            PAYLOAD+='{"id1": '"$ID"', "version": "'"$GITHUB_SHA"'"}'
+          done
+          PAYLOAD+="]"
+
+          echo "Generated Payload: $PAYLOAD"
+          echo "PAYLOAD=$PAYLOAD" >> $GITHUB_ENV
+
+      # - name: Install curl
+      #   run: |
+      #     apt-get update -y
+      #     apt-get install -y curl
+      # - name: Use curl
+      #   run: |
+      #     curl --version
+      # リポジトリがsumit_config_testingかsumit_configかで判定してURLを変える
+      # マージされたかどうかのパラメータを参照して判定する
+      # https://qiita.com/okazy/items/7ab46f2c20ec341a2836
+
+      # pull requestをマージした時に動作する想定
+      # sumit_config_testingではfeatureからfeatureブランチにマージした時に動作させて確認可能
       - name: Call Backend API
         run: |
-          RESPONSE=$(curl --request PATCH \
+          TMP_BODY=$(mktemp)
+          STATUS=$(curl -sS -X PATCH \
             --url http://localhost:8000/api/ci/v1/sumits/version/ \
-            --header 'authorization: Bearer ${{ secrets.AIRPLUG_CI_TOKEN }}' \
-            --header 'content-type: application/json')
-          echo "$RESPONSE"
+            -H 'authorization: Bearer LAZC8VzwS6jfbIw1*eulGnqHDd8Ycsce8L9cuDx2V6F9OTxLDcykCQJ-D0yQEgvb' \
+            -H 'content-type: application/json' \
+            --data "$PAYLOAD" \
+            -o "$TMP_BODY" \
+            -w '%{http_code}')
+
+          if [ "$STATUS" -eq 204 ]; then
+            echo "Call Backend API suceeded: status=$STATUS"
+          else
+            RESPONSE=$(cat "$TMP_BODY")
+            rm -f "$TMP_BODY"
+            echo "Backend API call failed: status=$STATUS"
+            echo "Response body:"
+            printf '%s\n' "$RESPONSE"
+            exit 1
+          fi
