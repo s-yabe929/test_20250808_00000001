@@ -60,8 +60,13 @@ jobs:
       # sumit_config_testingではfeatureからfeatureブランチにマージした時に動作させて確認可能
       - name: Call Backend API
         run: |
-          echo "repository_name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
-          echo "value=`basename ${{ github.repository }}`"
+          # echo "repository_name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
+          $REPO_NAME=`basename ${{ github.repository }}`
+          if [ "$REPO_NAME" = "sumit_config_testing" ]; then
+            BASE_URL="https://cloud-dev.aeterlink.com/"
+          else
+            BASE_URL="https://cloud.aeterlink.dummy/"
+          fi
 
           if [ -z "$IDS" ]; then
             echo "No updates to process. Exiting."
@@ -81,8 +86,8 @@ jobs:
 
           TMP_BODY=$(mktemp)
           STATUS=$(curl -sS -X PATCH \
-            --url http://localhost:8000/api/ci/v1/sumits/version/ \
-            -H 'authorization: Bearer LAZC8VzwS6jfbIw1*eulGnqHDd8Ycsce8L9cuDx2V6F9OTxLDcykCQJ-D0yQEgvb' \
+            --url "$BASE_URL/api/ci/v1/sumits/version/" \
+            -H "authorization: Bearer ${{ secrets.AIRPLUG_CI_TOKEN }}" \
             -H 'content-type: application/json' \
             --data "$PAYLOAD" \
             -o "$TMP_BODY" \
