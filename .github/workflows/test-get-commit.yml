@@ -61,6 +61,7 @@ jobs:
       - name: Call Backend API
         run: |
           echo "repository_name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
+          echo "value=`basename ${{ github.repository }}`"
 
           if [ -z "$IDS" ]; then
             echo "No updates to process. Exiting."
