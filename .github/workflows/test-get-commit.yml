@@ -61,7 +61,7 @@ jobs:
       - name: Call Backend API
         run: |
           # echo "repository_name=${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}"
-          $REPO_NAME=`basename ${{ github.repository }}`
+          REPO_NAME=`basename ${{ github.repository }}`
           if [ "$REPO_NAME" = "sumit_config_testing" ]; then
             BASE_URL="https://cloud-dev.aeterlink.com/"
           else
