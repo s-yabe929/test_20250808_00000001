@@ -49,6 +49,8 @@ jobs:
 
           echo "Unique IDs:"
           echo "$IDS"
+          ID_COUNT=${#IDS[@]}
+          echo "ID Count: $ID_COUNT"
           if [[ ${#IDS[@]} -eq 0 ]]; then
             echo "No changes detected. Exiting."
             exit 1
