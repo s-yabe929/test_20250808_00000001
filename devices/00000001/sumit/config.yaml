@@ -1,1 +1,204 @@
-
+app:
+  baud_rate: 230400
+ports:
+  - name: "1-CH0"
+    nodes:
+      - uid: "T11CBB-00000H500001"
+        slave_id: 1
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500002"
+        slave_id: 2
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500003"
+        slave_id: 3
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500004"
+        slave_id: 4
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500005"
+        slave_id: 5
+        power_supply_on: false
+        led_control_on: true
+  - name: "1-CH1"
+    nodes:
+      - uid: "T11CBB-00000H500006"
+        slave_id: 1
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500007"
+        slave_id: 2
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500008"
+        slave_id: 3
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500009"
+        slave_id: 4
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500010"
+        slave_id: 5
+        power_supply_on: false
+        led_control_on: true
+  - name: "1-CH2"
+    nodes:
+      - uid: "T11CBB-00000H500011"
+        slave_id: 1
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500012"
+        slave_id: 2
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500013"
+        slave_id: 3
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500014"
+        slave_id: 4
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500015"
+        slave_id: 5
+        power_supply_on: false
+        led_control_on: true
+  - name: "1-CH3"
+    nodes:
+      - uid: "T11CBB-00000H500016"
+        slave_id: 1
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500017"
+        slave_id: 2
+        power_supply_on: false
+        led_control_on: true
+      - uid: "T11CBB-00000H500018"
+        slave_id: 3
+        power_supply_on: false
+        led_control_on: true
+functions:
+  position_estimation: true
+  human_detection: false
+debug:
+  dump:
+    enabled: false
+    directory: ./dump
+cloud:
+  url: https://cloud.aeterlink.com/api/sumit
+  token: "WWj8TbDi9PZdCTsY@Ac8nfmj4zX3ta1y1B@jKhaucB69FuoEcPP@4bXVs#rq61*3"
+adapters: []
+zones: []
+static_sensors:
+  - device_id: "385CFB3ECF99"
+    x: 7.8
+    y: 18.7
+  - device_id: "385CFB3ED142"
+    x: 7.8
+    y: 19.3
+  - device_id: "385CFB3ED147"
+    x: 20.4
+    y: 18.2
+  - device_id: "385CFB3ED9B5"
+    x: 20.4
+    y: 18.8
+  - device_id: "385CFB3ED9BC"
+    x: 24.2
+    y: 18.6
+  - device_id: "385CFB3ED144"
+    x: 24.8
+    y: 18.6
+  - device_id: "385CFB3ED9B2"
+    x: 40.4
+    y: 18.5
+  - device_id: "385CFB3ED9B0"
+    x: 41.0
+    y: 18.5
+  - device_id: "385CFB3ED9AC"
+    x: 56.6
+    y: 18.5
+  - device_id: "385CFB3F3A2D"
+    x: 57.2
+    y: 18.5
+  - device_id: "385CFB3ED9D1"
+    x: 8.0
+    y: 35.7
+  - device_id: "385CFB3ED9AB"
+    x: 8.6
+    y: 35.7
+  - device_id: "385CFB3ED9A8"
+    x: 20.8
+    y: 35.4
+  - device_id: "385CFB3ED9BA"
+    x: 20.8
+    y: 36.0
+  - device_id: "385CFB3ED9AA"
+    x: 24.2
+    y: 35.7
+  - device_id: "385CFB3ED9BE"
+    x: 24.8
+    y: 35.7
+  - device_id: "385CFB3ED9A9"
+    x: 40.4
+    y: 35.7
+  - device_id: "385CFB3ED146"
+    x: 41.0
+    y: 35.7
+  - device_id: "385CFB3ECFA2"
+    x: 56.6
+    y: 35.7
+  - device_id: "385CFB3ED9B1"
+    x: 57.2
+    y: 35.7
+  - device_id: "385CFB3ECF84"
+    x: 8.0
+    y: 51.9
+  - device_id: "385CFB3ED9B3"
+    x: 8.6
+    y: 51.9
+  - device_id: "385CFB3ED9AD"
+    x: 20.8
+    y: 50.7
+  - device_id: "385CFB3ED996"
+    x: 20.8
+    y: 51.3
+  - device_id: "385CFB3ED995"
+    x: 24.2
+    y: 51.9
+  - device_id: "385CFB3ED992"
+    x: 24.8
+    y: 51.9
+  - device_id: "385CFB3ED9A4"
+    x: 40.4
+    y: 51.9
+  - device_id: "385CFB3ED9AF"
+    x: 41.0
+    y: 51.9
+  - device_id: "385CFB3ED98E"
+    x: 56.6
+    y: 51.9
+  - device_id: "385CFB3ED14D"
+    x: 57.2
+    y: 51.9
+  - device_id: "385CFB3ECF7D"
+    x: 72.6
+    y: 18.7
+  - device_id: "385CFB3ECF7C"
+    x: 72.6
+    y: 19.3
+  - device_id: "385CFB3F3BF2"
+    x: 72.6
+    y: 34.9
+  - device_id: "385CFB3F3BF4"
+    x: 72.6
+    y: 35.5
+  - device_id: "385CFB3F3BE8"
+    x: 72.6
+    y: 51.1
+  - device_id: "385CFB3F3C01"
+    x: 72.6
+    y: 51.7
